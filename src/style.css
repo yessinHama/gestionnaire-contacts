@@ -1,0 +1,152 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f0f2f5;
+  color: #333;
+}
+
+.container {
+  width: 680px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #0d7377;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: white;
+  padding: 28px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+input {
+  padding: 12px 16px;
+  font-size: 15px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.2s;
+  background: #fafafa;
+}
+
+input:focus {
+  border-color: #0d7377;
+  background: white;
+}
+
+input::placeholder {
+  color: #aaa;
+}
+
+button {
+  padding: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background: #0d7377;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+button:hover {
+  background: #0a5c60;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button.btn-cancel {
+  background: #aaa;
+}
+
+button.btn-cancel:hover {
+  background: #888;
+}
+
+button.btn-delete {
+  background: #e05c5c;
+}
+
+button.btn-delete:hover {
+  background: #c94444;
+}
+
+.top-bar {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+  align-items: center;
+}
+
+.top-bar input {
+  flex: 1;
+}
+
+.top-bar button {
+  white-space: nowrap;
+  padding: 12px 20px;
+}
+
+.card {
+  background: white;
+  margin-top: 16px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border-left: 4px solid #0d7377;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0d7377;
+  margin-bottom: 8px;
+}
+
+.card p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.buttons button {
+  padding: 8px 18px;
+  font-size: 13px;
+}
+
+p {
+  text-align: center;
+  color: #999;
+  margin-top: 20px;
+  font-size: 14px;
+}
