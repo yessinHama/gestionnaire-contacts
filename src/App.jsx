@@ -10,46 +10,41 @@ function App() {
   const [contacts, setContacts]             = useState([]);
   const [editingContact, setEditingContact] = useState(null);
 
-  // Vérifier si connecté
   const isLoggedIn = !!localStorage.getItem('token');
 
-  // Charger les contacts depuis le backend
   useEffect(() => {
     if (isLoggedIn) {
-      api.get('/contacts').then(setContacts);
+      api.get('/contacts').then((data) => {
+        if (Array.isArray(data)) setContacts(data);
+      });
     }
   }, []);
 
-  // Ajouter
   const addContact = (newContact) => {
     api.post('/contacts', newContact).then((created) => {
-      setContacts([...contacts, created]);
+      if (created.id) setContacts(prev => [...prev, created]);
     });
   };
 
-  // Modifier
   const updateContact = (id, updatedContact) => {
     api.put(`/contacts/${id}`, updatedContact).then(() => {
-      setContacts(contacts.map((c) =>
+      setContacts(prev => prev.map((c) =>
         c.id === id ? { id, ...updatedContact } : c
       ));
     });
   };
 
-  // Supprimer
   const deleteContact = (id) => {
     api.delete(`/contacts/${id}`).then(() => {
-      setContacts(contacts.filter((c) => c.id !== id));
+      setContacts(prev => prev.filter((c) => c.id !== id));
     });
   };
 
   return (
     <Routes>
 
-      {/* Page login */}
       <Route path="/login" element={<LoginPage />} />
 
-      {/* Page accueil - protégée */}
       <Route
         path="/"
         element={
@@ -59,11 +54,10 @@ function App() {
                 deleteContact={deleteContact}
                 setEditingContact={setEditingContact}
               />
-            : <Navigate to="/login" />
+            : <Navigate to="/login" replace />
         }
       />
 
-      {/* Page ajouter/modifier - protégée */}
       <Route
         path="/ajouter"
         element={
@@ -74,9 +68,11 @@ function App() {
                 editingContact={editingContact}
                 setEditingContact={setEditingContact}
               />
-            : <Navigate to="/login" />
+            : <Navigate to="/login" replace />
         }
       />
+
+      <Route path="*" element={<Navigate to="/login" replace />} />
 
     </Routes>
   );
