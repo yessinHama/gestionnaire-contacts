@@ -1,23 +1,25 @@
 import { useState } from "react";
+  import { api } from "../lib/api";
 
 function LoginPage() {
   const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
   const [error, setError]       = useState("");
+  const [loading, setLoading]   = useState(false);
 
   const handleLogin = async () => {
+    if (!email.trim() || !password.trim()) {
+      setError("Veuillez remplir tous les champs.");
+      return;
+    }
     setError("");
+    setLoading(true);
     try {
-      const res = await fetch("http://localhost:3001/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
+      const res  = await api.login(email, password);
       const data = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Erreur de connexion");
+        setError(data.error || "Identifiants incorrects.");
         return;
       }
 
@@ -25,31 +27,57 @@ function LoginPage() {
       window.location.href = "/";
 
     } catch (err) {
-      setError("Impossible de contacter le serveur");
+      setError("Impossible de contacter le serveur.");
+    } finally {
+      setLoading(false);
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleLogin();
+  };
+
   return (
-    <div style={{ maxWidth: 400, margin: "100px auto", padding: 24 }}>
-      <h2>Connexion</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={{ display: "block", width: "100%", marginBottom: 12, padding: 8 }}
-      />
-      <input
-        type="password"
-        placeholder="Mot de passe"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ display: "block", width: "100%", marginBottom: 12, padding: 8 }}
-      />
-      <button onClick={handleLogin} style={{ width: "100%", padding: 10 }}>
-        Se connecter
-      </button>
+    <div className="login-page">
+      <div className="login-card">
+        <div className="login-logo">
+          <div className="logo-circle">📋</div>
+          <h1>Gestionnaire de Contacts</h1>
+          <p>Connectez-vous pour accéder à vos contacts</p>
+        </div>
+
+        <div className="login-form">
+          {error && <div className="login-error">{error}</div>}
+
+          <div className="login-field">
+            <label>Adresse email</label>
+            <input
+              type="email"
+              placeholder="admin@test.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+          </div>
+
+          <div className="login-field">
+            <label>Mot de passe</label>
+            <input
+              type="password"
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+          </div>
+
+          <button className="btn-login" onClick={handleLogin} disabled={loading}>
+            {loading ? "Connexion..." : "Se connecter"}
+          </button>
+        </div>
+
+        <p className="login-hint">Appuyez sur Entrée pour vous connecter</p>
+      </div>
     </div>
   );
 }

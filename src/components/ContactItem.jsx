@@ -8,14 +8,19 @@ function ContactItem({ contact, deleteContact, setEditingContact }) {
     navigate("/ajouter");
   };
 
+  const initials = `${contact.firstname?.[0] ?? ""}${contact.name?.[0] ?? ""}`.toUpperCase();
+
   return (
     <div className="card">
-      <h3>{contact.firstname} {contact.name}</h3>
-      <p>Email : {contact.email}</p>
-      <p>Téléphone : {contact.phone}</p>
-      <div className="buttons">
-        <button onClick={handleEdit}>Modifier</button>
-        <button className="btn-delete" onClick={() => deleteContact(contact.id)}>Supprimer</button>
+      <div className="card-avatar">{initials}</div>
+      <div className="card-info">
+        <h3>{contact.firstname} {contact.name}</h3>
+        <div className="contact-detail">✉️ {contact.email}</div>
+        <div className="contact-detail">📞 {contact.phone}</div>
+      </div>
+      <div className="card-actions">
+        <button className="btn-edit" onClick={handleEdit}>✏️ Modifier</button>
+        <button className="btn-delete" onClick={() => deleteContact(contact.id)}>🗑 Supprimer</button>
       </div>
     </div>
   );
